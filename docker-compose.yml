@@ -10,7 +10,7 @@ services:
     container_name: devbuplaytime_postgres
     environment:
       POSTGRES_USER: devbu_user
-      POSTGRES_PASSWORD: devbu_pass
+      POSTGRES_PASSWORD: (${POSTGRES_PASSWORD})
       POSTGRES_DB: devbuplaytime
     ports:
       - '5432:5432'
@@ -29,7 +29,7 @@ services:
     container_name: devbuplaytime_pgadmin
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@devbuplaytime.com
-      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_DEFAULT_PASSWORD: (${POSTGRES_PASSWORD})
     ports:
       - '5050:80'
     depends_on:
