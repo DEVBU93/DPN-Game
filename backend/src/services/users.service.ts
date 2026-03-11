@@ -1,0 +1,43 @@
+import { PrismaClient } from '@prisma/client';
+import { AppError } from '../middlewares/errorHandler';
+
+const prisma = new PrismaClient();
+
+export const usersService = {
+  async findById(id: string) {
+    const user = await prisma.user.findUnique({
+      where: { id },
+      include: { profile: true, progress: true, achievements: true }
+    });
+    if (!user) throw new AppError('Usuario no encontrado', 404);
+    const { passwordHash, ...safe } = user;
+    return safe;
+  },
+
+  async updateProfile(userId: string, data: { displayName?: string; bio?: string; avatarUrl?: string }) {
+    return prisma.user.update({
+      where: { id: userId },
+      data: {
+        displayName: data.displayName,
+        avatarUrl: data.avatarUrl,
+        profile: { update: { bio: data.bio } }
+      },
+      select: { id: true, username: true, email: true, displayName: true, avatarUrl: true }
+    });
+  },
+
+  async getLeaderboard(limit = 10) {
+    return prisma.userProgress.findMany({
+      take: limit,
+      orderBy: { totalXp: 'desc' },
+      include: { user: { select: { id: true, username: true, displayName: true, avatarUrl: true } } }
+    });
+  },
+
+  async getUserCosmetics(userId: string) {
+    return prisma.userCosmetic.findMany({
+      where: { userId },
+      include: { cosmetic: true }
+    });
+  }
+};
