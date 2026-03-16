@@ -9,7 +9,7 @@ const navItems = [
   { path: '/profile', label: 'Perfil', icon: '👤' }
 ];
 
-export default function MainLayout() {
+export function MainLayout() {
   const { isAuthenticated, user, logout } = useAuthStore();
   const location = useLocation();
   if (!isAuthenticated) return <Navigate to="/auth/login" replace />;
