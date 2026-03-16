@@ -70,4 +70,5 @@ export default function App() {
       </BrowserRouter>
     </QueryClientProvider>
   );
+  export default WorldDetailPage;
 }
