@@ -11,7 +11,7 @@ import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
 import HomePage from './pages/home/HomePage';
 import WorldsPage from './pages/worlds/WorldsPage';
-import WorldDetailPage from './pages/worlds/WorldDetailPage';
+import {WorldDetailPage} from './pages/worlds/WorldDetailPage';
 import ChaptersPage from './pages/chapters/ChaptersPage';
 import MissionPage from './pages/missions/MissionPage';
 import QuizPage from './pages/quiz/QuizPage';
