@@ -22,7 +22,7 @@ jobs:
         image: postgres:16-alpine
         env:
           POSTGRES_USER:     devbu
-          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
           POSTGRES_DB:       devbudb_test
         ports:
           - 5432:5432
@@ -34,7 +34,7 @@ jobs:
 
     env:
       NODE_ENV:     test
-      DATABASE_URL: postgresql://devbu:${{ secrets.DB_PASSWORD }}@localhost:5432/devbudb_test
+      DATABASE_URL: postgresql://devbu:${POSTGRES_PASSWORD}@localhost:5432/devbudb_test
       JWT_SECRET:   ${{ secrets.JWT_SECRET }}
 
     steps:
