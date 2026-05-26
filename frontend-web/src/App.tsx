@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'react-hot-toast';
+import { Analytics } from '@vercel/analytics/react';
 import { useAuthStore } from './stores/authStore';
 import { MainLayout } from './layouts/MainLayout';
 import { AuthLayout } from './layouts/AuthLayout';
@@ -41,6 +42,7 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Toaster position="top-right" />
+        <Analytics />
         <Routes>
           {/* Auth routes */}
           <Route element={<AuthLayout />}>
