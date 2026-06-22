@@ -34,7 +34,7 @@ jobs:
       DATABASE_URL: postgresql://devbu:${{ secrets.DB_PASSWORD || 'ci_test_pass' }}@localhost:5432/devbudb_test
       JWT_SECRET: ${{ secrets.JWT_SECRET || 'ci_test_jwt_secret_worldmos_2026' }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Setup Node.js 20
         uses: actions/setup-node@v6
         with:
