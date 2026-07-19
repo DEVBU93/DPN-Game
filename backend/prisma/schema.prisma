@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  
+  }
 // ─── 1. USERS ─────────────────────────────────────────────────────────────────
 model User {
   id            String    @id @default(uuid())
