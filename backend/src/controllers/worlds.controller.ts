@@ -1,9 +1,8 @@
-import { Request, Response, NextFunction } from 'express';
+﻿import { Request, Response, NextFunction } from 'express';
 import prisma from '../lib/prisma';
 import { AppError } from '../middlewares/errorHandler';
 import { AuthRequest } from '../middlewares/auth.middleware';
 
-const prisma = new PrismaClient();
 
 export const worldsController = {
   async getAll(_req: Request, res: Response, next: NextFunction) {

@@ -1,10 +1,9 @@
-import { Router } from 'express';
+﻿import { Router } from 'express';
 import prisma from '../lib/prisma';
 import { authenticate } from '../middlewares/auth.middleware';
 import { AuthRequest } from '../middlewares/auth.middleware';
 
 const router = Router();
-const prisma = new PrismaClient();
 
 // GET /api/cosmetics - list all active cosmetics
 router.get('/', async (_req, res, next) => {
@@ -18,7 +17,7 @@ router.get('/', async (_req, res, next) => {
 router.post('/purchase/:id', authenticate, async (req: AuthRequest, res, next) => {
   try {
     const cosmetic = await prisma.cosmetic.findUnique({ where: { id: req.params.id } });
-    if (!cosmetic) { res.status(404).json({ success: false, message: 'Cosmético no encontrado' }); return; }
+    if (!cosmetic) { res.status(404).json({ success: false, message: 'CosmÃ©tico no encontrado' }); return; }
 
     const profile = await prisma.userProfile.findUnique({ where: { userId: req.user!.id } });
     if (!profile || profile.coins < cosmetic.price) {

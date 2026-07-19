@@ -1,9 +1,8 @@
-import { Router } from 'express';
+﻿import { Router } from 'express';
 import prisma from '../lib/prisma';
 import { authenticate, authorize } from '../middlewares/auth.middleware';
 
 const router = Router();
-const prisma = new PrismaClient();
 
 router.get('/', async (req, res, next) => {
   try {
@@ -22,7 +21,7 @@ router.get('/:id', async (req, res, next) => {
       where: { id: req.params.id },
       include: { missions: { include: { questions: true } } }
     });
-    if (!chapter) { res.status(404).json({ success: false, message: 'Capítulo no encontrado' }); return; }
+    if (!chapter) { res.status(404).json({ success: false, message: 'CapÃ­tulo no encontrado' }); return; }
     res.json({ success: true, data: chapter });
   } catch (e) { next(e); }
 });

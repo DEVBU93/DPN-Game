@@ -1,7 +1,6 @@
-import prisma from '../lib/prisma';
+﻿import prisma from '../lib/prisma';
 import bcrypt from 'bcryptjs';
 
-const prisma = new PrismaClient();
 
 async function main() {
   const password = 'Admin123!';
@@ -25,7 +24,7 @@ async function main() {
     }
   });
 
-  console.log('✅ Usuario ORQUESTADOR creado:', {
+  console.log('âœ… Usuario ORQUESTADOR creado:', {
     email: 'rubenrodriguez.f.93@gmail.com',
     password,
     role: 'ORQUESTADOR'

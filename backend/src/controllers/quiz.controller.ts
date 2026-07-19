@@ -1,14 +1,13 @@
-import { Response, NextFunction } from 'express';
+﻿import { Response, NextFunction } from 'express';
 import prisma from '../lib/prisma';
 import { AuthRequest } from '../middlewares/auth.middleware';
 import { AppError } from '../middlewares/errorHandler';
 import { logger } from '../utils/logger';
 
-const prisma = new PrismaClient();
 
 export const quizController = {
   /**
-   * Inicia una sesión de Quiz para una misión específica.
+   * Inicia una sesiÃ³n de Quiz para una misiÃ³n especÃ­fica.
    */
   async startSession(req: AuthRequest, res: Response, next: NextFunction) {
     try {
@@ -22,7 +21,7 @@ export const quizController = {
         include: { questions: { where: { isActive: true } } }
       });
 
-      if (!mission) throw new AppError('Misión no encontrada', 404);
+      if (!mission) throw new AppError('MisiÃ³n no encontrada', 404);
 
       const session = await prisma.quizSession.create({
         data: {
@@ -34,7 +33,7 @@ export const quizController = {
         }
       });
 
-      logger.info(`Sesión de Quiz iniciada: ${session.id} para el usuario ${userId}`);
+      logger.info(`SesiÃ³n de Quiz iniciada: ${session.id} para el usuario ${userId}`);
 
       res.status(201).json({
         success: true,
@@ -58,7 +57,7 @@ export const quizController = {
   },
 
   /**
-   * Procesa una respuesta individual y actualiza la sesión.
+   * Procesa una respuesta individual y actualiza la sesiÃ³n.
    */
   async submitAnswer(req: AuthRequest, res: Response, next: NextFunction) {
     try {
@@ -69,14 +68,14 @@ export const quizController = {
         throw new AppError('sessionId y questionId son requeridos', 400);
       }
 
-      // ✅ FIX: session se declara PRIMERO
+      // âœ… FIX: session se declara PRIMERO
       const session = await prisma.quizSession.findFirst({
         where: { id: sessionId, userId, status: 'ACTIVE' }
       });
 
-      if (!session) throw new AppError('Sesión no válida o ya finalizada', 403);
+      if (!session) throw new AppError('SesiÃ³n no vÃ¡lida o ya finalizada', 403);
 
-      // ✅ FIX: mission se busca DESPUÉS de tener session.missionId
+      // âœ… FIX: mission se busca DESPUÃ‰S de tener session.missionId
       const mission = await prisma.mission.findUnique({
         where: { id: session.missionId }
       });
@@ -122,7 +121,7 @@ export const quizController = {
   },
 
   /**
-   * Finaliza la sesión, calcula recompensas finales y actualiza el perfil del usuario.
+   * Finaliza la sesiÃ³n, calcula recompensas finales y actualiza el perfil del usuario.
    */
   async completeSession(req: AuthRequest, res: Response, next: NextFunction) {
     try {
@@ -133,9 +132,9 @@ export const quizController = {
         where: { id: sessionId, userId, status: 'ACTIVE' }
       });
 
-      if (!session) throw new AppError('Sesión no encontrada o ya procesada', 404);
+      if (!session) throw new AppError('SesiÃ³n no encontrada o ya procesada', 404);
 
-      // ✅ FIX: query separada para obtener la misión — session.mission no existe
+      // âœ… FIX: query separada para obtener la misiÃ³n â€” session.mission no existe
       const mission = await prisma.mission.findUnique({
         where: { id: session.missionId }
       });
@@ -174,7 +173,7 @@ export const quizController = {
         }
       });
 
-      logger.info(`Sesión completada: ${sessionId}. Usuario ${userId} ganó ${xpReward + session.score} XP y ${coinReward} Coins.`);
+      logger.info(`SesiÃ³n completada: ${sessionId}. Usuario ${userId} ganÃ³ ${xpReward + session.score} XP y ${coinReward} Coins.`);
 
       res.json({
         success: true,

@@ -1,10 +1,9 @@
-import { Router } from 'express';
+﻿import { Router } from 'express';
 import prisma from '../lib/prisma';
 import { authenticate } from '../middlewares/auth.middleware';
 import { AuthRequest } from '../middlewares/auth.middleware';
 
 const router = Router();
-const prisma = new PrismaClient();
 
 // GET /api/achievements - list all achievements
 router.get('/', async (_req, res, next) => {

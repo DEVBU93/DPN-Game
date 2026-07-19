@@ -1,9 +1,8 @@
-import { Response, NextFunction } from 'express';
+﻿import { Response, NextFunction } from 'express';
 import prisma from '../lib/prisma';
 import { AuthRequest } from '../middlewares/auth.middleware';
 import { v4 as uuidv4 } from 'uuid';
 
-const prisma = new PrismaClient();
 
 export const arenaController = {
   async findMatch(req: AuthRequest, res: Response, next: NextFunction) {

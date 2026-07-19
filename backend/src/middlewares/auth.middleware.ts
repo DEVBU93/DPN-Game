@@ -1,16 +1,15 @@
-import { Request, Response, NextFunction } from 'express';
+﻿import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import prisma from '../lib/prisma';
 import { logger } from '../utils/logger';
 import { AppError } from './errorHandler';
 
-const prisma = new PrismaClient();
 
 export interface AuthRequest extends Request {
   user?: { id: string; username: string; email: string; role: string };
 }
 
-// ── authenticate ─────────────────────────────────────────────
+// â”€â”€ authenticate â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export const authenticate = async (
   req: AuthRequest,
   res: Response,
@@ -33,7 +32,7 @@ export const authenticate = async (
     });
 
     if (!user || !user.isActive) {
-      res.status(401).json({ success: false, message: 'Token inválido o usuario inactivo' });
+      res.status(401).json({ success: false, message: 'Token invÃ¡lido o usuario inactivo' });
       return;
     }
 
@@ -41,11 +40,11 @@ export const authenticate = async (
     next();
   } catch (error) {
     logger.error('Auth middleware error:', error);
-    res.status(401).json({ success: false, message: 'Token inválido' });
+    res.status(401).json({ success: false, message: 'Token invÃ¡lido' });
   }
 };
 
-// ── authorize ────────────────────────────────────────────────
+// â”€â”€ authorize â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export const authorize = (...roles: string[]) => {
   return (req: AuthRequest, res: Response, next: NextFunction): void => {
     if (!req.user || !roles.includes(req.user.role)) {

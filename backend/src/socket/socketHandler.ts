@@ -1,8 +1,7 @@
-import { Server as IOServer, Socket } from 'socket.io';
+﻿import { Server as IOServer, Socket } from 'socket.io';
 import prisma from '../lib/prisma';
 import { logger } from '../utils/logger';
 
-const prisma = new PrismaClient();
 
 interface AuthenticatedSocket extends Socket {
   userId?: string;
