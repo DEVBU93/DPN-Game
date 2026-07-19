@@ -2,7 +2,8 @@
 // DB: PostgreSQL (migrable a SQL Server con proveedor sqlserver)
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
