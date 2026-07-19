@@ -4,8 +4,6 @@ import prisma from '../lib/prisma';
 import { AppError } from '../middlewares/errorHandler';
 import { logger } from '../utils/logger';
 
-const prisma = new PrismaClient();
-
 interface RegisterDTO {
   username: string;
   email: string;
