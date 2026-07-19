@@ -7,9 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
+  
 // ─── 1. USERS ─────────────────────────────────────────────────────────────────
 model User {
   id            String    @id @default(uuid())
