@@ -27,7 +27,7 @@
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.11.0",
-    "multer": "^2.0.2",
+    "multer": "^2.2.0",
     "socket.io": "^4.7.4",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
