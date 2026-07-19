@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -6,7 +7,6 @@ import compression from 'compression';
 import rateLimit from 'express-rate-limit';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import dotenv from 'dotenv';
 import authRouter from './routes/auth.routes';
 import usersRouter from './routes/users.routes';
 import worldsRouter from './routes/worlds.routes';
@@ -21,8 +21,6 @@ import achievementsRouter from './routes/achievements.routes';
 import { logger } from './utils/logger';
 import { errorHandler } from './middlewares/errorHandler';
 import { setupSocketHandlers } from './socket/socketHandler';
-
-dotenv.config();
 
 // Validate required env vars - warn but don't crash if missing in dev
 const requiredEnvVars = ['JWT_SECRET', 'DATABASE_URL'];
