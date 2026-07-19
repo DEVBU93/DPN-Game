@@ -1,5 +1,5 @@
 import { Response, NextFunction } from 'express';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../lib/prisma';
 import { AuthRequest } from '../middlewares/auth.middleware';
 import { v4 as uuidv4 } from 'uuid';
 
