@@ -17,8 +17,9 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
 
 router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
     const mission = await prisma.mission.findUnique({
-      where: { id: req.params.id },
+      where: { id: id },
       include: { questions: { orderBy: { createdAt: 'asc' } } }
     });
     if (!mission) { res.status(404).json({ success: false, message: 'Mision no encontrada' }); return; }
