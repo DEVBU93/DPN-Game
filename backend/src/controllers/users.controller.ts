@@ -5,7 +5,9 @@ import { AuthRequest } from '../middlewares/auth.middleware';
 export const usersController = {
   async getProfile(req: AuthRequest, res: Response, next: NextFunction) {
     try {
-      const user = await usersService.findById(req.params.id || req.user!.id);
+      const idParam = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const id = idParam ?? req.user!.id;
+      const user = await usersService.findById(id);
       res.json({ success: true, data: user });
     } catch (e) { next(e); }
   },
