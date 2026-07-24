@@ -24,7 +24,7 @@ export const arenaController = {
   async getMatchStatus(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const sessions = await prisma.arenaSession.findMany({
-        where: { roomCode: req.params.roomCode },
+        where: { roomCode: req.params.roomCode === 'string' },
         include: { user: { select: { id: true, username: true } } }
       });
       res.json({ success: true, data: sessions });
