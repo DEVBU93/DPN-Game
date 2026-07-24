@@ -1,4 +1,4 @@
-﻿import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import prisma from '../lib/prisma';
 import { AppError } from '../middlewares/errorHandler';
 import { AuthRequest } from '../middlewares/auth.middleware';
@@ -18,8 +18,11 @@ export const worldsController = {
 
   async getById(req: Request, res: Response, next: NextFunction) {
     try {
+      const idParam = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      if (!idParam) throw new AppError('Mundo no encontrado', 404);
+
       const world = await prisma.world.findUnique({
-        where: { id: req.params.id },
+        where: { id: idParam },
         include: {
           chapters: {
             include: { missions: { include: { questions: true } } },
@@ -41,7 +44,10 @@ export const worldsController = {
 
   async update(req: AuthRequest, res: Response, next: NextFunction) {
     try {
-      const world = await prisma.world.update({ where: { id: req.params.id }, data: req.body });
+      const idParam = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      if (!idParam) { res.status(400).json({ success: false, message: 'Id is required' }); return; }
+
+      const world = await prisma.world.update({ where: { id: idParam }, data: req.body });
       res.json({ success: true, data: world });
     } catch (e) { next(e); }
   }

@@ -1,4 +1,4 @@
-﻿import { Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import prisma from '../lib/prisma';
 import { AuthRequest } from '../middlewares/auth.middleware';
 import { v4 as uuidv4 } from 'uuid';
@@ -23,8 +23,15 @@ export const arenaController = {
 
   async getMatchStatus(req: AuthRequest, res: Response, next: NextFunction) {
     try {
+      // Normalizar roomCode (si viniera como array, tomar el primero)
+      const roomCodeParam = Array.isArray(req.params.roomCode) ? req.params.roomCode[0] : req.params.roomCode;
+      if (!roomCodeParam) {
+        res.status(400).json({ success: false, message: 'Room code is required' });
+        return;
+      }
+
       const sessions = await prisma.arenaSession.findMany({
-        where: { roomCode: req.params.roomCode === 'string' },
+        where: { roomCode: roomCodeParam },
         include: { user: { select: { id: true, username: true } } }
       });
       res.json({ success: true, data: sessions });

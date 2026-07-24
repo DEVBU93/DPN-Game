@@ -1,12 +1,13 @@
-﻿import { Router, Request, Response, NextFunction } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import prisma from '../lib/prisma';
 
 const router = Router();
 
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const chapterId = Array.isArray(req.query.chapterId) ? req.query.chapterId[0] : req.query.chapterId;
     const missions = await prisma.mission.findMany({
-      where: req.query.chapterId ? { chapterId: req.query.chapterId as string } : undefined,
+      where: chapterId ? { chapterId: chapterId as string } : undefined,
       include: { questions: { orderBy: { createdAt: 'asc' } } },
       orderBy: { order: 'asc' }
     });
