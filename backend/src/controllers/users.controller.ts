@@ -5,7 +5,9 @@ import { AuthRequest } from '../middlewares/auth.middleware';
 export const usersController = {
   async getProfile(req: AuthRequest, res: Response, next: NextFunction) {
     try {
-      const user = await usersService.findById(req.params.id || req.user!.id);
+      const idRaw = (req.params as any).id;
+      const id = Array.isArray(idRaw) ? idRaw[0] : idRaw ?? req.user!.id;
+      const user = await usersService.findById(id);
       res.json({ success: true, data: user });
     } catch (e) { next(e); }
   },
@@ -19,7 +21,9 @@ export const usersController = {
 
   async getLeaderboard(req: AuthRequest, res: Response, next: NextFunction) {
     try {
-      const limit = parseInt(req.query.limit as string) || 10;
+      const limitRaw = (req.query as any).limit;
+      const limitStr = Array.isArray(limitRaw) ? limitRaw[0] : limitRaw;
+      const limit = parseInt(limitStr || '10') || 10;
       const board = await usersService.getLeaderboard(limit);
       res.json({ success: true, data: board });
     } catch (e) { next(e); }

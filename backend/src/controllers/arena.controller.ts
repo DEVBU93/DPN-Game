@@ -23,8 +23,16 @@ export const arenaController = {
 
   async getMatchStatus(req: AuthRequest, res: Response, next: NextFunction) {
     try {
+      // Normalize roomCode param (Express may type it as string | string[])
+      const rawRoomCode = (req.params as any).roomCode;
+      const roomCode = Array.isArray(rawRoomCode) ? rawRoomCode[0] : rawRoomCode;
+
+      if (!roomCode) {
+        return res.status(400).json({ success: false, error: 'Missing roomCode parameter' });
+      }
+
       const sessions = await prisma.arenaSession.findMany({
-        where: { roomCode: req.params.roomCode },
+        where: { roomCode },
         include: { user: { select: { id: true, username: true } } }
       });
       res.json({ success: true, data: sessions });

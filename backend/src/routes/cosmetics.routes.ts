@@ -16,8 +16,13 @@ router.get('/', async (_req, res, next) => {
 // POST /api/cosmetics/purchase/:id - purchase a cosmetic using coins from userProfile
 router.post('/purchase/:id', authenticate, async (req: AuthRequest, res, next) => {
   try {
-    const cosmetic = await prisma.cosmetic.findUnique({ where: { id: req.params.id } });
-    if (!cosmetic) { res.status(404).json({ success: false, message: 'CosmÃ©tico no encontrado' }); return; }
+    const idRaw = (req.params as any).id;
+    const id = Array.isArray(idRaw) ? idRaw[0] : idRaw;
+
+    if (!id) { res.status(400).json({ success: false, message: 'Invalid cosmetic id' }); return; }
+
+    const cosmetic = await prisma.cosmetic.findUnique({ where: { id } });
+    if (!cosmetic) { res.status(404).json({ success: false, message: 'Cosmético no encontrado' }); return; }
 
     const profile = await prisma.userProfile.findUnique({ where: { userId: req.user!.id } });
     if (!profile || profile.coins < cosmetic.price) {
@@ -25,7 +30,7 @@ router.post('/purchase/:id', authenticate, async (req: AuthRequest, res, next) =
     }
 
     const [userCosmetic] = await prisma.$transaction([
-      prisma.userCosmetic.create({ data: { userId: req.user!.id, cosmeticId: req.params.id } }),
+      prisma.userCosmetic.create({ data: { userId: req.user!.id, cosmeticId: id } }),
       prisma.userProfile.update({ where: { userId: req.user!.id }, data: { coins: { decrement: cosmetic.price } } })
     ]);
     res.json({ success: true, data: userCosmetic });

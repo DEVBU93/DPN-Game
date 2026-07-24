@@ -18,8 +18,13 @@ export const worldsController = {
 
   async getById(req: Request, res: Response, next: NextFunction) {
     try {
+      const idRaw = (req.params as any).id;
+      const id = Array.isArray(idRaw) ? idRaw[0] : idRaw;
+
+      if (!id) throw new AppError('Mundo no encontrado', 404);
+
       const world = await prisma.world.findUnique({
-        where: { id: req.params.id },
+        where: { id },
         include: {
           chapters: {
             include: { missions: { include: { questions: true } } },
@@ -41,7 +46,12 @@ export const worldsController = {
 
   async update(req: AuthRequest, res: Response, next: NextFunction) {
     try {
-      const world = await prisma.world.update({ where: { id: req.params.id }, data: req.body });
+      const idRaw = (req.params as any).id;
+      const id = Array.isArray(idRaw) ? idRaw[0] : idRaw;
+
+      if (!id) throw new AppError('Mundo no encontrado', 404);
+
+      const world = await prisma.world.update({ where: { id }, data: req.body });
       res.json({ success: true, data: world });
     } catch (e) { next(e); }
   }

@@ -5,8 +5,11 @@ const router = Router();
 
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const chapterIdRaw = (req.query as any).chapterId;
+    const chapterId = Array.isArray(chapterIdRaw) ? chapterIdRaw[0] : chapterIdRaw;
+
     const missions = await prisma.mission.findMany({
-      where: req.query.chapterId ? { chapterId: req.query.chapterId as string } : undefined,
+      where: chapterId ? { chapterId } : undefined,
       include: { questions: { orderBy: { createdAt: 'asc' } } },
       orderBy: { order: 'asc' }
     });
@@ -16,8 +19,11 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
 
 router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const idRaw = (req.params as any).id;
+    const id = Array.isArray(idRaw) ? idRaw[0] : idRaw;
+
     const mission = await prisma.mission.findUnique({
-      where: { id: req.params.id },
+      where: { id },
       include: { questions: { orderBy: { createdAt: 'asc' } } }
     });
     if (!mission) { res.status(404).json({ success: false, message: 'Mision no encontrada' }); return; }
