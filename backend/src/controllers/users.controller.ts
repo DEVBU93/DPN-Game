@@ -1,12 +1,12 @@
 import { Response, NextFunction } from 'express';
 import { usersService } from '../services/users.service';
 import { AuthRequest } from '../middlewares/auth.middleware';
+import { singleParam } from '../lib/params';
 
 export const usersController = {
   async getProfile(req: AuthRequest, res: Response, next: NextFunction) {
     try {
-      const idRaw = (req.params as any).id;
-      const id = Array.isArray(idRaw) ? idRaw[0] : idRaw ?? req.user!.id;
+      const id = singleParam(req.params.id) ?? req.user!.id;
       const user = await usersService.findById(id);
       res.json({ success: true, data: user });
     } catch (e) { next(e); }
@@ -21,9 +21,8 @@ export const usersController = {
 
   async getLeaderboard(req: AuthRequest, res: Response, next: NextFunction) {
     try {
-      const limitRaw = (req.query as any).limit;
-      const limitStr = Array.isArray(limitRaw) ? limitRaw[0] : limitRaw;
-      const limit = parseInt(limitStr || '10') || 10;
+      const limitStr = singleParam((req.query as any).limit) ?? '10';
+      const limit = parseInt(limitStr) || 10;
       const board = await usersService.getLeaderboard(limit);
       res.json({ success: true, data: board });
     } catch (e) { next(e); }

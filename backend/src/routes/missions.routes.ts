@@ -1,12 +1,12 @@
 ﻿import { Router, Request, Response, NextFunction } from 'express';
 import prisma from '../lib/prisma';
+import { singleParam } from '../lib/params';
 
 const router = Router();
 
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const chapterIdRaw = (req.query as any).chapterId;
-    const chapterId = Array.isArray(chapterIdRaw) ? chapterIdRaw[0] : chapterIdRaw;
+    const chapterId = singleParam((req.query as any).chapterId);
 
     const missions = await prisma.mission.findMany({
       where: chapterId ? { chapterId } : undefined,
@@ -19,8 +19,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
 
 router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const idRaw = (req.params as any).id;
-    const id = Array.isArray(idRaw) ? idRaw[0] : idRaw;
+    const id = singleParam(req.params.id);
 
     const mission = await prisma.mission.findUnique({
       where: { id },

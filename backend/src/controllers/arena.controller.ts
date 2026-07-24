@@ -2,6 +2,7 @@
 import prisma from '../lib/prisma';
 import { AuthRequest } from '../middlewares/auth.middleware';
 import { v4 as uuidv4 } from 'uuid';
+import { singleParam } from '../lib/params';
 
 
 export const arenaController = {
@@ -24,8 +25,7 @@ export const arenaController = {
   async getMatchStatus(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       // Normalize roomCode param (Express may type it as string | string[])
-      const rawRoomCode = (req.params as any).roomCode;
-      const roomCode = Array.isArray(rawRoomCode) ? rawRoomCode[0] : rawRoomCode;
+      const roomCode = singleParam(req.params.roomCode);
 
       if (!roomCode) {
         return res.status(400).json({ success: false, error: 'Missing roomCode parameter' });

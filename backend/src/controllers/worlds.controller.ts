@@ -2,6 +2,7 @@
 import prisma from '../lib/prisma';
 import { AppError } from '../middlewares/errorHandler';
 import { AuthRequest } from '../middlewares/auth.middleware';
+import { singleParam } from '../lib/params';
 
 
 export const worldsController = {
@@ -18,8 +19,7 @@ export const worldsController = {
 
   async getById(req: Request, res: Response, next: NextFunction) {
     try {
-      const idRaw = (req.params as any).id;
-      const id = Array.isArray(idRaw) ? idRaw[0] : idRaw;
+      const id = singleParam(req.params.id);
 
       if (!id) throw new AppError('Mundo no encontrado', 404);
 
@@ -46,8 +46,7 @@ export const worldsController = {
 
   async update(req: AuthRequest, res: Response, next: NextFunction) {
     try {
-      const idRaw = (req.params as any).id;
-      const id = Array.isArray(idRaw) ? idRaw[0] : idRaw;
+      const id = singleParam(req.params.id);
 
       if (!id) throw new AppError('Mundo no encontrado', 404);
 

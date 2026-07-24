@@ -2,6 +2,7 @@
 import prisma from '../lib/prisma';
 import { authenticate } from '../middlewares/auth.middleware';
 import { AuthRequest } from '../middlewares/auth.middleware';
+import { singleParam } from '../lib/params';
 
 const router = Router();
 
@@ -16,8 +17,7 @@ router.get('/', async (_req, res, next) => {
 // POST /api/cosmetics/purchase/:id - purchase a cosmetic using coins from userProfile
 router.post('/purchase/:id', authenticate, async (req: AuthRequest, res, next) => {
   try {
-    const idRaw = (req.params as any).id;
-    const id = Array.isArray(idRaw) ? idRaw[0] : idRaw;
+    const id = singleParam(req.params.id);
 
     if (!id) { res.status(400).json({ success: false, message: 'Invalid cosmetic id' }); return; }
 
